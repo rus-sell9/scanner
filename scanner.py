@@ -4,6 +4,37 @@ import os
 import sys
 import ctypes
 
+def check_root():
+    """Check if the script is running with root privileges."""
+    if os.geteuid() != 0:
+        print("This script requires root privileges.")
+        print("Please run the script with sudo.")
+        sys.exit(1)
+    if input_os == "1":
+        check_root()
+def check_dependencies():
+    """Check if required tools are installed."""
+    required_tools = ["nikto", "whatweb", "nmap"]
+    missing_tools = []
+
+    for tool in required_tools:
+        if subprocess.call(["which", tool], stdout=subprocess.PIPE, stderr=subprocess.PIPE) != 0:
+            missing_tools.append(tool)
+
+    if missing_tools:
+        print(f"Missing tools: {', '.join(missing_tools)}")
+        print("Please install them before running this script.")
+        instalar = input("Do you want to install them? (y/n): ")
+        if instalar.lower() == 'y' or instalar.lower() == 'yes':
+            print("Installing missing tools...")
+            for tool in missing_tools:
+                print(f"Installing {tool}...")
+                subprocess.run(["sudo", "apt-get", "install", "-y", tool])
+        else:
+            print("Exiting...")
+        sys.exit(1)
+          
+
 def linux():
     check_root()
     check_dependencies()
@@ -60,36 +91,7 @@ check_update()
 
 
 
-def check_root():
-    """Check if the script is running with root privileges."""
-    if os.geteuid() != 0:
-        print("This script requires root privileges.")
-        print("Please run the script with sudo.")
-        sys.exit(1)
-    if input_os == "1":
-        check_root()
-def check_dependencies():
-    """Check if required tools are installed."""
-    required_tools = ["nikto", "whatweb", "nmap"]
-    missing_tools = []
 
-    for tool in required_tools:
-        if subprocess.call(["which", tool], stdout=subprocess.PIPE, stderr=subprocess.PIPE) != 0:
-            missing_tools.append(tool)
-
-    if missing_tools:
-        print(f"Missing tools: {', '.join(missing_tools)}")
-        print("Please install them before running this script.")
-        instalar = input("Do you want to install them? (y/n): ")
-        if instalar.lower() == 'y' or instalar.lower() == 'yes':
-            print("Installing missing tools...")
-            for tool in missing_tools:
-                print(f"Installing {tool}...")
-                subprocess.run(["sudo", "apt-get", "install", "-y", tool])
-        else:
-            print("Exiting...")
-        sys.exit(1)
-          
 def run_nikto(target):
     print(f"Running Nikto on {target}...")
     subprocess.run(["nikto", "-h", target])
