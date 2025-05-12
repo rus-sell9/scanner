@@ -4,7 +4,49 @@ import os
 import sys
 import ctypes
 
- 
+def linux():
+    check_root()
+    check_dependencies()
+    print("Thansk you for using this script. Enjoy the experience.")
+    target = input("Enter the target IP or domain: ")
+    mode = input("Enter the scan mode (full, whatweb, nmap, nikto): ")
+    if mode == "full":
+        full_scan(target)
+    elif mode == "whatweb":
+        run_whatweb(target)
+    elif mode == "nmap":
+        run_nmap(target)
+    elif mode == "nikto":
+        run_nikto(target)
+def windows():
+    print("This script is designed to run on Linux.")
+    print("You can use the other script  (windows_scanner.py) for Windows.")
+    print("Exiting...")
+    sys.exit(1)
+def mac():
+    print("This script is designed to run on Linux.")
+    print("We are working on a Mac version.")
+    print("Exiting...")
+    sys.exit(1)
+
+print("What is your os?")
+print("1. Linux")
+print("2. Windows")
+print("3. Mac")
+print("4. Other")
+input_os = input("Enter the number of your OS: ")
+if input_os == "1":
+    linux()  
+elif input_os == "2":
+    windows()
+elif input_os == "3":
+    mac()
+else:
+    print("We do not recognize this OS.")
+    print("Please use the Linux version.")
+    print("Exiting...")
+    sys.exit(1)
+
 def check_update():
     """check if the script is up to date."""
     try:
@@ -86,49 +128,8 @@ def main():
         run_nmap(args.target)
     elif args.mode == "nikto":
         run_nikto(args.target)
-def linux():
-    check_root()
-    check_dependencies()
-    print("Thansk you for using this script. Enjoy the experience.")
-    target = input("Enter the target IP or domain: ")
-    mode = input("Enter the scan mode (full, whatweb, nmap, nikto): ")
-    if mode == "full":
-        full_scan(target)
-    elif mode == "whatweb":
-        run_whatweb(target)
-    elif mode == "nmap":
-        run_nmap(target)
-    elif mode == "nikto":
-        run_nikto(target)
-def windows():
-    print("This script is designed to run on Linux.")
-    print("You can use the other script  (windows_scanner.py) for Windows.")
-    print("Exiting...")
-    sys.exit(1)
-def mac():
-    print("This script is designed to run on Linux.")
-    print("We are working on a Mac version.")
-    print("Exiting...")
-    sys.exit(1)
+
 if __name__ == "__main__":
     main()
-
-print("What is your os?")
-print("1. Linux")
-print("2. Windows")
-print("3. Mac")
-print("4. Other")
-input_os = input("Enter the number of your OS: ")
-if input_os == "1":
-    linux()  
-elif input_os == "2":
-    windows()
-elif input_os == "3":
-    mac()
-else:
-    print("We do not recognize this OS.")
-    print("Please use the Linux version.")
-    print("Exiting...")
-    sys.exit(1)
 # End of the script
 #Developed by Russell
